@@ -2,9 +2,14 @@
 
 ## Project Overview
 
-Built a hands-on Identity and Access Management (IAM) homelab to simulate enterprise user administration, access control, and identity security operations.
+Built a hands-on Identity and Access Management (IAM) homelab to simulate enterprise identity administration, access control, account security, and auditing.
 
-The project includes an on-premises Active Directory environment and a separate Microsoft Entra ID cloud environment.
+The project consists of two environments:
+
+- **On-premises Active Directory:** Windows Server 2025 domain controller, Windows 11 domain-joined workstation, departmental security groups, Group Policy, and file permissions.
+- **Microsoft Entra ID:** Cloud-based user administration, security group management, password resets, account disablement, and audit logging.
+
+**Current status:** Both environments are configured independently. Hybrid identity synchronization is planned as a future enhancement.
 
 ## Technologies Used
 
@@ -13,79 +18,91 @@ The project includes an on-premises Active Directory environment and a separate 
 - Microsoft Entra ID
 - Windows 11 Pro
 - PowerShell
-- Group Policy
+- Group Policy Management
 - Oracle VirtualBox
+- NTFS Permissions
 
 ## Lab Architecture
 
-### On-Premises Environment
+### On-Premises Active Directory
 
 | Component | Configuration |
 |---|---|
 | Domain Controller | DC01 — Windows Server 2025 |
-| Domain | corp.homelab.test |
-| Workstation | CLIENT01 — Windows 11 Pro |
-| Departmental OUs | IT, HR, Finance |
+| Active Directory Domain | corp.homelab.test |
+| Client Workstation | CLIENT01 — Windows 11 Pro |
+| Domain Controller IP | 192.168.100.10 |
+| Workstation IP | 192.168.100.20 |
+| Organizational Units | Employees, IT, HR, Finance, Workstations |
 | Security Groups | SG_IT, SG_HR, SG_Finance |
+| Virtualization | Oracle VirtualBox |
 
-The domain controller provides Active Directory Domain Services and DNS. CLIENT01 is joined to the domain for testing authentication and access permissions.
+DC01 provides Active Directory Domain Services and DNS. CLIENT01 is joined to the domain and used to test authentication, group-based authorization, and workstation policies.
 
-### Cloud Environment
+### Microsoft Entra ID
 
-Configured a personal Microsoft Entra ID tenant for cloud identity administration, including user provisioning, security groups, password resets, account disablement, and audit log review.
+A separate Microsoft Entra ID tenant was configured to practice cloud identity administration.
 
-**Current status:** On-premises Active Directory and Microsoft Entra ID are managed separately. Hybrid identity synchronization has not yet been implemented.
+The environment includes a cloud-only test user and an IT security group for testing account lifecycle operations and access management.
 
-## Implemented IAM Features
+## 1. Active Directory User and OU Administration
 
-### 1. Active Directory User Administration
-- Created employee accounts and organized them into departmental organizational units.
-- Configured department-based security group membership.
-- Enabled and disabled user accounts using PowerShell.
+Created an Active Directory domain and organized employee accounts into departmental organizational units.
 
-### 2. Role-Based Access Control
-- Created departmental shared folders.
-- Configured NTFS permissions based on security group membership.
-- Tested access revocation and restoration by changing group membership.
+Implemented the following structure:
 
-### 3. Group Policy and Account Security
-- Configured an account lockout policy of five failed attempts.
-- Configured a workstation inactivity lock policy of 600 seconds.
-- Verified policy application using Windows administrative tools.
+- Employees
+  - IT
+  - HR
+  - Finance
+- Workstations
+- Security Groups
 
-### 4. Microsoft Entra ID Administration
-- Created a cloud-only test user and security group.
-- Managed group membership and user account states.
-- Performed password resets.
-- Reviewed administrative audit logs.
+Created test employee accounts and assigned them to their respective departments.
 
-### 5. PowerShell Administration
-- Queried Active Directory users.
-- Enabled and disabled user accounts.
-- Modified security group membership.
-- Updated user principal names.
+### Active Directory OU Structure
 
-## Security Testing
+![Active Directory OU Structure](activedirectoryoustructure.png)
 
-Validated departmental file access using a domain-joined Windows 11 workstation.
+## 2. Security Group Management
 
-Confirmed that security group membership changes affected access to protected resources.
+Created departmental security groups to manage access through group membership rather than assigning permissions individually.
 
-Reviewed Windows Security events and Microsoft Entra ID audit logs to observe identity administration activities.
+Configured the following groups:
 
-## Skills Demonstrated
+- SG_IT — IT department
+- SG_HR — Human Resources department
+- SG_Finance — Finance department
 
-- Identity and Access Management (IAM)
-- Active Directory administration
-- Microsoft Entra ID administration
-- Role-Based Access Control (RBAC)
-- User lifecycle management
-- Group Policy
-- PowerShell
-- Access auditing and troubleshooting
+Assigned users to the appropriate groups and verified membership using Active Directory Users and Computers.
 
-## Future Enhancements
+### Security Group Membership
 
-- Hybrid identity synchronization
-- Automated user provisioning and deprovisioning
-- Additional authentication and identity security controls
+![Active Directory Security Group Membership](adsecuritygroupmembership.png)
+
+## 3. Role-Based Access Control and File Permissions
+
+Created departmental folders under `C:\CompanyFiles` and configured NTFS permissions to restrict access based on Active Directory security group membership.
+
+Configured a shared resource accessible through:
+
+`\\DC01\CompanyFiles`
+
+Tested access using a domain-joined Windows 11 workstation.
+
+### Access Control Testing
+
+1. Signed in using a departmental employee account.
+2. Verified access to the authorized departmental folder.
+3. Removed the employee from the relevant security group.
+4. Signed out and back in to refresh group membership.
+5. Verified that access was revoked.
+6. Restored group membership and confirmed access was restored.
+
+This demonstrated how group-based permissions support access provisioning and revocation.
+
+### Departmental Folder Permissions
+
+![NTFS Folder Permissions](adfilepermissions.png)
+
+## 4. Group Policy and
