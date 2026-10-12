@@ -105,4 +105,121 @@ This demonstrated how group-based permissions support access provisioning and re
 
 ![NTFS Folder Permissions](adfilepermissions.png)
 
-## 4. Group Policy and
+## 4. Group Policy and Account Security
+
+Configured Group Policy settings to enforce security controls across the domain.
+
+### Account Lockout Policy
+
+| Setting | Value |
+|---|---|
+| Account lockout threshold | 5 invalid logon attempts |
+| Account lockout duration | 15 minutes |
+| Reset account lockout counter | 15 minutes |
+
+Also configured a workstation inactivity lock policy of 600 seconds.
+
+Verified policy configuration using Windows administrative tools.
+
+### Group Policy Configuration
+
+![Group Policy Account Lockout](adgrouppolicy.png)
+
+## 5. PowerShell Active Directory Administration
+
+Used PowerShell to query and administer Active Directory identities.
+
+Practiced the following administrative operations:
+
+- Querying Active Directory users
+- Checking account status
+- Enabling and disabling accounts
+- Managing security group membership
+- Updating user principal names (UPNs)
+
+Example command:
+
+```powershell
+Get-ADUser jsmith -Properties Enabled,UserPrincipalName |
+Select Name,Enabled,UserPrincipalName
+```
+
+This retrieves the user's name, enabled status, and user principal name.
+
+### PowerShell Administration
+
+![Active Directory PowerShell](adpowershell.png)
+
+## 6. Microsoft Entra ID User Administration
+
+Configured a personal Microsoft Entra ID tenant for cloud-based identity management.
+
+Created a cloud-only test user and performed common identity lifecycle operations, including:
+
+- Creating user accounts
+- Resetting passwords
+- Disabling user accounts
+- Re-enabling user accounts
+- Reviewing account properties
+
+These activities provided practical experience administering identities in Microsoft Entra ID.
+
+### Microsoft Entra ID Users
+
+![Microsoft Entra ID Users](entrausers.png)
+
+## 7. Microsoft Entra ID Security Groups
+
+Created the `SG_Cloud_IT` security group and added the cloud test user as a member.
+
+Verified group membership through the Microsoft Azure portal.
+
+This demonstrated cloud-based security group administration and user membership management.
+
+### Cloud Security Group Membership
+
+![Microsoft Entra Security Group](entrasecuritygroup.png)
+
+## 8. Identity Auditing and Monitoring
+
+Reviewed identity administration events using Windows Security logs and Microsoft Entra ID audit logs.
+
+### Active Directory
+
+Used Windows Event Viewer to inspect account administration activity, including account disablement events.
+
+### Microsoft Entra ID
+
+Reviewed successful identity administration events, including:
+
+- Reset user password
+- Update user
+- Update PasswordProfile
+
+These logs demonstrate how administrative identity changes can be reviewed for accountability and troubleshooting.
+
+### Microsoft Entra ID Audit Logs
+
+![Microsoft Entra ID Audit Logs](entraauditlogs.png)
+
+## Skills Demonstrated
+
+- Identity and Access Management (IAM)
+- Active Directory Domain Services
+- Microsoft Entra ID administration
+- Identity lifecycle management
+- Role-Based Access Control (RBAC)
+- Security group administration
+- NTFS permissions
+- Group Policy configuration
+- PowerShell administration
+- Account security and access revocation
+- Identity auditing and troubleshooting
+- Windows Server administration
+
+## Future Enhancements
+
+- Implement hybrid identity synchronization between Active Directory and Microsoft Entra ID.
+- Develop PowerShell scripts for automated user provisioning and deprovisioning.
+- Explore additional identity security controls and authentication policies.
+
